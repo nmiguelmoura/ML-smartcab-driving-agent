@@ -2,6 +2,8 @@
 # Reinforcement Learning
 ## Project: Train a Smartcab How to Drive
 
+This is an exercise from Udacity Machine Learning Nanodegree
+
 ### Install
 
 This project requires **Python 2.7** with the [pygame](https://www.pygame.org/wiki/GettingStarted
