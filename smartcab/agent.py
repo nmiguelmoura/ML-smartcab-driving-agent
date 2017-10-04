@@ -42,7 +42,7 @@ class LearningAgent(Agent):
         # If 'testing' is True, set epsilon and alpha to 0
 
         # For default Q-learning
-        # self.epsilon = 1 - (0.05 * self.trial)
+        #self.epsilon = 1 - (0.05 * self.trial)
 
         a = 0.995
         self.epsilon = math.pow(a, self.trial)
@@ -74,9 +74,14 @@ class LearningAgent(Agent):
         # Because the aim of this project is to teach Reinforcement Learning, we have placed 
         # constraints in order for you to learn how to adjust epsilon and alpha, and thus learn about the balance between exploration and exploitation.
         # With the hand-engineered features, this learning process gets entirely negated.
-        
-        # Set 'state' as a tuple of relevant data for the agent        
-        state = (waypoint, inputs["light"], inputs["left"], inputs["oncoming"])
+
+
+        # Set 'state' as a tuple of relevant data for the agent
+        # IMPORTANT NOTE
+        # Left car doesnt matter because we have priority over him.
+        # Considering the stop light, we should be able to ignore both left and right cars, but
+        # if we include the left one, this might be able to work without stop light as well.
+        state = (waypoint, inputs["light"], inputs["right"], inputs["oncoming"])
 
         return state
 
@@ -132,7 +137,7 @@ class LearningAgent(Agent):
         # Otherwise, choose an action with the highest Q-value for the current state
         # Be sure that when choosing an action with highest Q-value that you randomly select between actions that "tie".
 
-        action = random.choice(self.valid_actions)
+        #action = random.choice(self.valid_actions)
         if self.epsilon > random.random():
             action = random.choice(self.valid_actions)
         else:
@@ -169,7 +174,8 @@ class LearningAgent(Agent):
         # Q[s][a] = (1 - alpha) * Q[s][a] + alpha * (reward + max(Q[s'][a']))
 
         #h = hash(state)
-        self.Q[state][action] = (1 - self.alpha) * self.Q[state][action] + self.alpha * reward
+        if self.learning:
+            self.Q[state][action] = (1 - self.alpha) * self.Q[state][action] + self.alpha * reward
 
         return
 
