@@ -13100,8 +13100,9 @@ No, this smartcab is not safe and not reliable either. The data shows us too man
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong>
-The first two features, 'waypoint' and 'inputs' are the most relevant for learning both safety and efficiency. The third feature 'deadline', is just important to measure the efficiency of the cab.<br>While 'waypoint' is essencial to reach the destination, the 'inputs' are also important to maintain the cab safe and reach its destiny.<br>We don't even need to worry about 'left' or 'right' vehicles, because traffic is controlled by a traffic light, but I opted for discarding only the right one, as in a context of no traffic lights, it doesn't interfere with the agents movement.</p>
-<p>The 'deadline' feature is not important here, as the 'planner' has this in consideration to return the 'waypoint'.</p>
+The first two features, 'waypoint' and 'inputs' are the most relevant for learning both safety and efficiency. The third feature 'deadline', is just important to measure the efficiency of the cab.<br>While 'waypoint' is essencial to reach the destination, the 'inputs' are also important to maintain the cab safe and reach its destiny.<br>We don't need to worry about 'right' vehicles, because traffic is controlled by a traffic light and this doesn't interfere with the agents movement.</p>
+<p>The 'deadline' feature is not important here, as the 'planner' has this in consideration to return the 'waypoint'. The deadline feature only represents the time steps available to reach the goal based on number of intersections that separate the agent from the goal:</p>
+<p>From environment.py  -&gt; deadline = distance * 5 #5 time steps per intersection away</p>
 
 </div>
 </div>
@@ -13144,7 +13145,7 @@ Considering that we have:</p>
 The total number of combinations is given by:</li>
 </ul>
 <p>3 ⨉ 2 ⨉ 4<sup>2</sup> = 96 possible states.</p>
-<p>Given the number of possible states, we will need a big amount of trials to correctly train this cab.</p>
+<p>The number of states is not very big and the agent can perfectly learn the expected behaviour in a reasonable amount of trials.</p>
 
 </div>
 </div>
@@ -16617,7 +16618,7 @@ zMzM6sQBlpmZmZmZWZ04wDIzMzMzM6sTB1hmZmZmZmZ18n82WuNegLgwCAAAAABJRU5ErkJggg==
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong>
-The simulation result is far better in optimized agent, where we achieved A+ in both safety and reliability, than on default one, where we achieved F in safety and B in reliability.
+The simulation result is far better in optimized agent, where we achieved A+ in both safety and reliability, than on default one, where we achieved F in safety and A in reliability.
 After about 250 trials, the optimized agent starts recieving consistent average positive rewards, and a reliability rate between 80 and 100%.</p>
 <p>What decaying function was used for epsilon (the exploration factor)?
 I used $\epsilon = a^{t}$ with an a value of 0.995.</p>
@@ -16695,9 +16696,9 @@ For instance, if the waypoint is going forward, the agent should advance forward
         <td>green</td>
         <td>right</td>
         <td>left</td>
-        <th>none</th>
+        <th>forward</th>
     </tr>
-</table><p>In the first situation, the light is green and no other vehicle interferes with the movement, so the action should be go towards goal. In the second case, the oncoming vehicle will cross the trajectory of our agent, so in that case it should not act and wait for the other car to pass by.</p>
+</table><p>In the first situation, the light is green and no other vehicle interferes with the movement, so the action should be go towards goal. In the second case, we want to go forward so in a green light we can always do that, no matter what the other drivers do.</p>
 <p>Questions 2, 3 and 4<br>
 Take for example this state (Please consider the variables in the tupple as (waypoint, light, left, oncoming)):</p>
 <p>('left', 'red', 'right', None)
