@@ -79,9 +79,8 @@ class LearningAgent(Agent):
         # Set 'state' as a tuple of relevant data for the agent
         # IMPORTANT NOTE
         # Left car doesnt matter because we have priority over him.
-        # Considering the stop light, we should be able to ignore both left and right cars, but
-        # if we include the left one, this might be able to work without stop light as well.
-        state = (waypoint, inputs["light"], inputs["right"], inputs["oncoming"])
+        # Considering the stop light, we should be able to ignore both left and right cars
+        state = (waypoint, inputs["light"], inputs["left"], inputs["oncoming"])
 
         return state
 
@@ -137,25 +136,26 @@ class LearningAgent(Agent):
         # Otherwise, choose an action with the highest Q-value for the current state
         # Be sure that when choosing an action with highest Q-value that you randomly select between actions that "tie".
 
-        #action = random.choice(self.valid_actions)
-        if self.epsilon > random.random():
-            action = random.choice(self.valid_actions)
-        else:
-            #h = hash(state)
-            if state not in self.Q:
+        if self.learning:
+            if self.epsilon > random.random():
                 action = random.choice(self.valid_actions)
             else:
-                q = self.Q[state]
-                max_reward = -100.0
-                list_of_draws = []
-                for act in q:
-                    if q[act] > max_reward:
-                        list_of_draws = [act]
-                        max_reward = q[act]
-                    elif q[act] == max_reward:
-                        list_of_draws.append(act)
-                action = random.choice(list_of_draws)
-
+                # h = hash(state)
+                if state not in self.Q:
+                    action = random.choice(self.valid_actions)
+                else:
+                    q = self.Q[state]
+                    max_reward = -100.0
+                    list_of_draws = []
+                    for act in q:
+                        if q[act] > max_reward:
+                            list_of_draws = [act]
+                            max_reward = q[act]
+                        elif q[act] == max_reward:
+                            list_of_draws.append(act)
+                    action = random.choice(list_of_draws)
+        else:
+            action = random.choice(self.valid_actions)
 
         return action
 
